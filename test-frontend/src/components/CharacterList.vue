@@ -22,20 +22,14 @@ const fetchCharacters = async () => {
   loading.value = true
   error.value = ''
 
-  // Check if the search contains at least 3 letters before making the request
-  if (search.value.length > 0 && search.value.length < 3) {
-    loading.value = false
-    return
-  }
-
   try {
     const response = await axios.get('https://rickandmortyapi.com/api/character', {
       params: {
         page: page.value,
         name: search.value || undefined,
-        status: status.value.length > 0 ? status.value.split(',') : undefined,
-        gender: gender.value.length > 0 ? gender.value.split(',') : undefined,
-        species: species.value.length > 0 ? species.value.split(',') : undefined,
+        status: status.value || undefined,
+        gender: gender.value || undefined,
+        species: species.value || undefined,
       },
     })
 
@@ -48,14 +42,14 @@ const fetchCharacters = async () => {
   } catch (err: any) {
     if (err.response) {
       if (err.response.status === 404) {
-        error.value = 'Aucun personnage ne correspond à votre recherche.'
+        error.value = 'No characters match your search.'
       } else if (err.response.status >= 500) {
-        error.value = 'Erreur du serveur. Veuillez réessayer plus tard.'
+        error.value = 'Server error. Please try again later.'
       }
     } else if (err.message.includes('timeout')) {
-      error.value = 'La connexion a expiré. Veuillez vérifier votre connexion internet.'
+      error.value = 'Connection timed out. Please check your internet connection.'
     } else {
-      error.value = "Une erreur inattendue s'est produite."
+      error.value = 'An unexpected error has occurred.'
     }
   } finally {
     loading.value = false
@@ -78,6 +72,7 @@ const goToNextPage = () => {
   }
 }
 
+// Function to navigate to a specific page
 const goToPage = (num: number) => {
   if (num !== page.value) {
     page.value = num
@@ -85,6 +80,7 @@ const goToPage = (num: number) => {
   }
 }
 
+// Function to reset all filters
 const resetFilters = () => {
   search.value = ''
   status.value = ''

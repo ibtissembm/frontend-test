@@ -7,7 +7,7 @@
   </template>
   
   <script setup lang="ts">
-  // Aucun script n'est nécessaire ici car on affiche uniquement un message statique
+  // No script is needed here as we are only displaying a static message
   </script>
   
   <style scoped lang="scss">
